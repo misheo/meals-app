@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:rev_2024/screens/tabs.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+final theme = ThemeData(
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: const Color.fromARGB(255, 147, 229, 250),
+  ) ,
+  textTheme: GoogleFonts.robotoTextTheme(),
+) ; 
 void main() {
   runApp(const MyApp());
 }
@@ -12,14 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Grocery',
-      theme: ThemeData.dark().copyWith(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 147, 229, 250),
-            brightness: Brightness.dark,
-            surface: const Color.fromARGB(255, 42, 51, 59),
-          ),
-          scaffoldBackgroundColor: const Color.fromARGB(255, 50, 58, 60)),
+      theme: theme , 
       home: const  Tabs(),
     );
   }
