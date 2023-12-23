@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rev_2024/screens/tabs.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
             surface: const Color.fromARGB(255, 42, 51, 59),
           ),
           scaffoldBackgroundColor: const Color.fromARGB(255, 50, 58, 60)),
-      home: const Placeholder(),
+      home: const  Tabs(),
     );
   }
 }
