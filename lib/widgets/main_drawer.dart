@@ -18,7 +18,7 @@ class MainDrawer extends StatelessWidget {
               ]),
             ),
             padding: const EdgeInsets.all(20),
-            child: Row(
+            child: const Row(
               children: [
                 Text('hello world')
               ],
