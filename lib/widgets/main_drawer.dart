@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:rev_2024/screens/filters.dart';
 
 class MainDrawer extends StatelessWidget {
-  const MainDrawer({super.key});
-
+  const MainDrawer({super.key ,required this.onSelectScreen});
+  final void Function (String identifier) onSelectScreen ; 
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -20,9 +21,39 @@ class MainDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: const Row(
               children: [
-                Text('hello world')
+                Icon(Icons.fastfood),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Cooking Up",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                )
               ],
-            ))
+            )),
+        ListTile(
+          leading: const Icon(Icons.restaurant),
+          title: const Text("Categories"),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.star),
+          title: const Text("Favorites"),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.settings),
+          title: const Text("Filtters"),
+          onTap: () {
+            
+            Navigator.pop(context);
+            onSelectScreen('filtters');
+          },
+        ),
       ]),
     );
   }
