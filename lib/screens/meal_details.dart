@@ -8,26 +8,39 @@ class MealDetails extends ConsumerWidget {
   const MealDetails({Key? key, required this.meal}) : super(key: key);
   final Meal meal;
   @override
-  Widget build(BuildContext context , WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // var width = MediaQuery.of(context).size.width;
+    // var height = MediaQuery.of(context).size.height;
+
     bool isFavorite = ref.watch(favoriteProvider).contains(meal);
-    Icon ic = Icon(isFavorite ? Icons.star : Icons.star_border);
     return Scaffold(
         appBar: AppBar(
           title: Text(meal.title),
           actions: [
-            IconButton(onPressed: () {
-              ref.watch(favoriteProvider.notifier).handleFavorite(meal);
-            }, icon:  ic)
+            IconButton(
+                onPressed: () {
+                  ref.watch(favoriteProvider.notifier).handleFavorite(meal);
+                },
+                icon: AnimatedSwitcher(
+                    duration: const Duration(seconds: 1),
+                    transitionBuilder: (child, animation) {
+                      return ScaleTransition(scale: animation, child: child);
+                    },
+                    child: Icon(isFavorite ? Icons.star : Icons.star_border,
+                        key: ValueKey(isFavorite)))),
           ],
         ),
         body: Column(
           children: [
-            FadeInImage(
-                image: NetworkImage(meal.imageUrl),
-                placeholder: MemoryImage(kTransparentImage),
-                fit: BoxFit.cover,
-                height: 300,
-                width: double.infinity),
+            Hero(
+              tag: meal.id,
+              child: FadeInImage(
+                  image: NetworkImage(meal.imageUrl),
+                  placeholder: MemoryImage(kTransparentImage),
+                  fit: BoxFit.cover,
+                  height: 300,
+                  width: double.infinity),
+            ),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(10),
@@ -57,10 +70,10 @@ class MealDetails extends ConsumerWidget {
                         .titleLarge!
                         .copyWith(color: Theme.of(context).colorScheme.primary),
                     textAlign: TextAlign.center,
-                  ) , 
+                  ),
                   const SizedBox(
                     height: 15,
-                  ) , 
+                  ),
                   ...meal.steps.map((step) => Text(step))
                 ],
               ),
