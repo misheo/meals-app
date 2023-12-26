@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rev_2024/Modules/meal.dart';
+import 'package:rev_2024/provider/favorite_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class MealDetails extends StatelessWidget {
+class MealDetails extends ConsumerWidget {
   const MealDetails({Key? key, required this.meal}) : super(key: key);
   final Meal meal;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context , WidgetRef ref) {
+    bool isFavorite = ref.watch(favoriteProvider).contains(meal);
+    Icon ic = Icon(isFavorite ? Icons.star : Icons.star_border);
     return Scaffold(
         appBar: AppBar(
           title: Text(meal.title),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.star_border))
+            IconButton(onPressed: () {
+              ref.watch(favoriteProvider.notifier).handleFavorite(meal);
+            }, icon:  ic)
           ],
         ),
         body: Column(

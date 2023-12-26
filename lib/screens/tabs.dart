@@ -1,31 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rev_2024/provider/favorite_provider.dart';
+import 'package:rev_2024/provider/filters_provider.dart';
 import 'package:rev_2024/screens/categories.dart';
 import 'package:rev_2024/screens/filters.dart';
 import 'package:rev_2024/screens/meals_screen.dart';
 import 'package:rev_2024/widgets/main_drawer.dart';
 
-const kInitialFilters = {
-  Filter.glutenFree: false,
-  Filter.lactoseFree: false,
-  Filter.vegetarian: false,
-  Filter.vegan: false,
-};
-
-class Tabs extends StatefulWidget {
+class Tabs extends ConsumerStatefulWidget {
   const Tabs({Key? key}) : super(key: key);
 
   @override
-  State<Tabs> createState() => _TabsState();
+  ConsumerState<Tabs> createState() => _TabsState();
 }
 
-class _TabsState extends State<Tabs> {
+class _TabsState extends ConsumerState<Tabs> {
   int _selectedPageIndex = 0;
-  Map<Filter, bool> _selectedFilters = {
-    Filter.glutenFree: false,
-    Filter.lactoseFree: false,
-    Filter.vegetarian: false,
-    Filter.vegan: false,
-  };
 
   void _selectedPage(index) {
     setState(() {
@@ -33,17 +23,13 @@ class _TabsState extends State<Tabs> {
     });
   }
 
-  void onSelectScreen(String identifier) async {
+  void onSelectScreen(String identifier) {
     if (identifier == 'filtters') {
-      var selectedFiltersResult =
-          await Navigator.push<Map<Filter, bool>>(context, MaterialPageRoute(
+      Navigator.push(context, MaterialPageRoute(
         builder: (context) {
           return const FiltersScreen();
         },
       ));
-      setState(() {
-        _selectedFilters = selectedFiltersResult ?? kInitialFilters;
-      });
     } else {
       Navigator.pop(context);
     }
@@ -51,10 +37,11 @@ class _TabsState extends State<Tabs> {
 
   @override
   Widget build(BuildContext context) {
-    Widget activePage = const Categories();
+    final avilabelMeals = ref.watch(filteredMealsProvider);
+    Widget activePage =  Categories(mealsList: avilabelMeals,);
     var activeTitle = 'Categories';
     if (_selectedPageIndex == 1) {
-      activePage = const MealsScreen(meals: []);
+      activePage =  MealsScreen(meals: ref.watch(favoriteProvider));
       activeTitle = 'Favorites';
     }
     return Scaffold(
